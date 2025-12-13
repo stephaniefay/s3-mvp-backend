@@ -5,6 +5,7 @@ import fay.dto.authentication.LoginBody;
 import fay.dto.authentication.LoginResponse;
 import fay.dto.authentication.UserResponse;
 import fay.utils.AuthenticationUtils;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -15,6 +16,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 @Slf4j
 @Path("/authentication")
+@Produces(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
     @Inject
@@ -25,7 +27,7 @@ public class AuthResource {
 
     @POST
     @Path("login")
-    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     public RestResponse<LoginResponse> doLogin (LoginBody body) {
         LoginResponse response = new LoginResponse();
@@ -43,14 +45,13 @@ public class AuthResource {
     @GET
     @Path("me")
     @RolesAllowed({"User"})
-    @Produces(MediaType.APPLICATION_JSON)
     public RestResponse<UserResponse> getUser() {
         return util.getLoggedUser(jwt);
     }
 
     @POST
     @Path("create")
-    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     public RestResponse<UserResponse> createAccount (CreateUserBody body) {
         return util.createUser(body);

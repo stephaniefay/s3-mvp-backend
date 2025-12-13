@@ -1,6 +1,7 @@
 package fay.repository;
 
 import fay.dto.authentication.CreateUserBody;
+import fay.dto.authentication.UpdateUserBody;
 import fay.dto.authentication.UserResponse;
 import fay.model.auth.User;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -38,11 +39,12 @@ public class UserRepository {
         return Optional.empty();
     }
 
-    public Optional<User> getUserByUsername (String username) {
+    public Optional<User> getUserByUsernameOrEmail(String username) {
         CriteriaBuilder criteriaBuilder = eM.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> root = criteriaQuery.from(User.class);
-        Predicate predicate = criteriaBuilder.equal(root.get("username"), username);
+        Predicate predicate = criteriaBuilder.or(criteriaBuilder.equal(root.get("username"), username),
+                criteriaBuilder.equal(root.get("email"), username));
 
         criteriaQuery.where(predicate);
         try {
@@ -55,9 +57,33 @@ public class UserRepository {
     }
 
     @Transactional
+    public UserResponse updateUser (String id, UpdateUserBody body) {
+        Optional<User> optional = getUser(id);
+        if (optional.isPresent()) {
+            User user = optional.get();
+
+            if (body.getAvatar() != null)
+                user.setAvatar(body.getAvatar());
+
+            if (body.getBio() != null)
+                user.setBio(body.getBio());
+
+            if (body.getName() != null)
+                user.setName(body.getName());
+
+            eM.merge(user);
+            eM.flush();
+
+            return new UserResponse(user);
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
     public UserResponse createUser (CreateUserBody body) {
         User user;
-        Optional<User> optional = getUserByUsername(body.getUsername());
+        Optional<User> optional = getUserByUsernameOrEmail(body.getUsername());
         if (optional.isEmpty()) {
             user = new User();
             user.setId(UUID.randomUUID().toString());
@@ -71,12 +97,7 @@ public class UserRepository {
         } else
             user = optional.get();
 
-        UserResponse response = new UserResponse();
-        response.setId(user.getId());
-        response.setNickname(user.getUsername());
-        response.setEmail(user.getEmail());
-
-        return response;
+        return new UserResponse(user);
     }
 
     public String digestPassword (String password) {

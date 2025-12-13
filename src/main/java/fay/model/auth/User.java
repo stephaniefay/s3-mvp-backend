@@ -25,9 +25,11 @@ public class User {
     @Column
     private String password;
 
-    @Column(unique = true)
     private String email;
 
     @Column
     private String avatar;
+
+    @Column
+    private String bio;
 }
