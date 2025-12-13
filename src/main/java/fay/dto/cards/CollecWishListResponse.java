@@ -1,7 +1,6 @@
 package fay.dto.cards;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import fay.model.card.UserCollection;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,12 +11,11 @@ import java.util.List;
 @Setter
 @RegisterForReflection
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Wishlist extends Collection {
+public class CollecWishListResponse {
 
-    private List<String> tags;
+    List<Collection> collections;
 
-    public Wishlist(UserCollection collection, boolean isOwner, List<String> tags) {
-        super(collection, isOwner);
-        this.tags = tags;
+    public CollecWishListResponse(List<Collection> collections) {
+        this.collections = collections;
     }
 }
