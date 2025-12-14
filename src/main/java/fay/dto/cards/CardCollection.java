@@ -12,6 +12,7 @@ import lombok.Setter;
 public class CardCollection {
 
     private String id;
+    private String externalId;
     private String name;
     private String image;
 

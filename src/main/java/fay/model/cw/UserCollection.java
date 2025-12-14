@@ -1,4 +1,4 @@
-package fay.model.card;
+package fay.model.cw;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

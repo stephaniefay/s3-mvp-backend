@@ -1,4 +1,4 @@
-package fay.dto.cards;
+package fay.dto.cw;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.quarkus.runtime.annotations.RegisterForReflection;

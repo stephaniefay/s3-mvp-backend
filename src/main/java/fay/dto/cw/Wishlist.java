@@ -1,7 +1,7 @@
-package fay.dto.cards;
+package fay.dto.cw;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import fay.model.card.UserCollection;
+import fay.model.cw.UserCollection;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package fay.dto.cards;
+package fay.dto.cw;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -11,11 +11,11 @@ import java.util.List;
 @Setter
 @RegisterForReflection
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CollecWishListResponse {
+public class CollectWishResponse {
 
-    List<Collection> collections;
+    List<Collection> cw;
 
-    public CollecWishListResponse(List<Collection> collections) {
-        this.collections = collections;
+    public CollectWishResponse(List<Collection> cw) {
+        this.cw = cw;
     }
 }

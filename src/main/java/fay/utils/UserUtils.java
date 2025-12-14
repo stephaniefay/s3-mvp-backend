@@ -2,14 +2,14 @@ package fay.utils;
 
 import fay.dto.authentication.UpdateUserBody;
 import fay.dto.authentication.UserResponse;
-import fay.dto.cards.CollecWishListResponse;
-import fay.dto.cards.Collection;
-import fay.dto.cards.Wishlist;
+import fay.dto.cw.CollectWishResponse;
+import fay.dto.cw.Collection;
+import fay.dto.cw.Wishlist;
 import fay.dto.user.CreateUserCWBody;
 import fay.model.auth.User;
 import fay.model.card.Card;
-import fay.model.card.UserCollection;
-import fay.repository.CollectionRepository;
+import fay.model.cw.UserCollection;
+import fay.repository.CWRepository;
 import fay.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,7 +27,7 @@ public class UserUtils {
     UserRepository repository;
 
     @Inject
-    CollectionRepository collectionRepository;
+    CWRepository CWRepository;
 
     public UserResponse updateUser (String id, UpdateUserBody body) {
         return repository.updateUser(id, body);
@@ -38,14 +38,14 @@ public class UserUtils {
         return user.map(UserResponse::new).orElse(null);
     }
 
-    public CollecWishListResponse getCollectionOrWishlistFromUser (String id, String type, boolean getPrivate) {
+    public CollectWishResponse getCollectionOrWishlistFromUser (String id, String type, boolean getPrivate) {
         List<UserCollection> collectionsOrWishlists = null;
         if (type.equals(Card.Relation.COLLECTION.getName()))
-            collectionsOrWishlists = collectionRepository.fetchUserCollections(id, getPrivate);
+            collectionsOrWishlists = CWRepository.fetchUserCollections(id, getPrivate);
         else if (type.equals(Card.Relation.WISHLIST.getName()))
-            collectionsOrWishlists = collectionRepository.fetchUserWishlist(id);
+            collectionsOrWishlists = CWRepository.fetchUserWishlists(id);
 
-        CollecWishListResponse response = new CollecWishListResponse(new ArrayList<>());
+        CollectWishResponse response = new CollectWishResponse(new ArrayList<>());
         if (collectionsOrWishlists == null) {
             log.warn("wrong type passed [{}]", type);
             return response;
@@ -54,9 +54,9 @@ public class UserUtils {
         for  (UserCollection collection : collectionsOrWishlists) {
             String collectionType = collection.getType();
             if (collectionType.equals(Card.Relation.COLLECTION.getName()))
-                response.getCollections().add(new Collection(collection, getPrivate));
+                response.getCw().add(new Collection(collection, getPrivate));
             else if (collectionType.equals(Card.Relation.WISHLIST.getName()))
-                response.getCollections().add(new Wishlist(collection, getPrivate, new ArrayList<>()));
+                response.getCw().add(new Wishlist(collection, getPrivate, new ArrayList<>()));
         }
 
         return response;
@@ -64,13 +64,9 @@ public class UserUtils {
 
     public Collection createCollectionOrWishlist (String id, CreateUserCWBody body) {
         if (body.validate() && id != null)
-            return collectionRepository.createCollecWish(body, id);
+            return CWRepository.createCW(body, id);
 
         return null;
-    }
-
-    public Collection updateCollectionOrWishlist (String collectionId, CreateUserCWBody body) {
-        return collectionRepository.updateCollecWish(body, collectionId);
     }
 
 }

@@ -2,8 +2,8 @@ package fay.resource;
 
 import fay.dto.authentication.UpdateUserBody;
 import fay.dto.authentication.UserResponse;
-import fay.dto.cards.CollecWishListResponse;
-import fay.dto.cards.Collection;
+import fay.dto.cw.CollectWishResponse;
+import fay.dto.cw.Collection;
 import fay.dto.user.CreateUserCWBody;
 import fay.model.card.Card;
 import fay.utils.UserUtils;
@@ -56,7 +56,7 @@ public class UserResource {
 
     @GET
     @Path("/{id}/collections")
-    public RestResponse<CollecWishListResponse> getCollectionsFromUser (@PathParam("id") String id) {
+    public RestResponse<CollectWishResponse> getCollectionsFromUser (@PathParam("id") String id) {
         boolean getPrivate = id.equals(jwt.getClaim("sub"));
         return RestResponse.ok(util.getCollectionOrWishlistFromUser(id, Card.Relation.COLLECTION.getName(), getPrivate));
     }
@@ -72,24 +72,9 @@ public class UserResource {
         return  RestResponse.status(RestResponse.Status.BAD_REQUEST);
     }
 
-    @PATCH
-    @RolesAllowed({"User"})
-    @Path("/{userId}/collections/{id}")
-    public RestResponse<Collection> updateCollection (@PathParam("userId") String id, @PathParam("id") String collectionId, CreateUserCWBody body) {
-        if (jwt.getClaim("sub").equals(id)) {
-            Collection response = util.updateCollectionOrWishlist(collectionId, body);
-            if (response != null)
-                return RestResponse.ok(response);
-            return RestResponse.notModified();
-        } else {
-            log.error("user does not have authority to change information");
-        }
-        return RestResponse.status(Response.Status.UNAUTHORIZED);
-    }
-
     @GET
     @Path("/{id}/wishlists")
-    public RestResponse<CollecWishListResponse> getWishlistsFromUser (@PathParam("id") String id) {
+    public RestResponse<CollectWishResponse> getWishlistsFromUser (@PathParam("id") String id) {
         boolean getPrivate = id.equals(jwt.getClaim("sub"));
         return RestResponse.ok(util.getCollectionOrWishlistFromUser(id, Card.Relation.WISHLIST.getName(), getPrivate));
     }
@@ -103,21 +88,6 @@ public class UserResource {
         if (created != null)
             return RestResponse.status(Response.Status.CREATED, created);
         return  RestResponse.status(RestResponse.Status.BAD_REQUEST);
-    }
-
-    @PATCH
-    @RolesAllowed({"User"})
-    @Path("/{userId}/wishlists/{id}")
-    public RestResponse<Collection> updateWishlist (@PathParam("userId") String id, @PathParam("id") String wishlistId, CreateUserCWBody body) {
-        if (jwt.getClaim("sub").equals(id)) {
-            Collection response = util.updateCollectionOrWishlist(wishlistId, body);
-            if (response != null)
-                return RestResponse.ok(response);
-            return RestResponse.notModified();
-        } else {
-            log.error("user does not have authority to change information");
-        }
-        return RestResponse.status(Response.Status.UNAUTHORIZED);
     }
 
 }
