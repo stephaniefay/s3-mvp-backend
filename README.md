@@ -13,6 +13,10 @@ e features a serem adicionadas.
 
 ![diagrama](diagrama.png)
 
+### Swagger
+A documentação, em swagger, pode ser encontrada no endpoint [http://localhost:8080/swagger/](http://localhost:8080/swagger/)
+contanto que a aplicação esteja no ar e sejam usadas as configurações padrões passadas nesse ReadME.
+
 ## Execução
 
 Existem várias maneiras para a execução do projeto, mas para fins avaliativos da pós (e para a facilidade de execução)
@@ -23,12 +27,12 @@ Como informado acima, já que executaremos o docker utilizando a imagem nativa (
 o código abaixo.
 
 ```shell script
-docker build -f src/main/docker/Dockerfile.native -t quarkus/s3-mvp-backend .
+docker build -f src/main/docker/Dockerfile.native -t s3-mvp-backend .
 ```
 
 E assim que a finalização do build acontecer, rodar com:
 ```shell script
-docker run -i --rm -p 8080:8080 quarkus/s3-mvp-backend
+docker run -i --rm -p 8080:8080 s3-mvp-backend
 ```
 
 A imagem já estará buildada inclusive com o H2 (utilizado para a construção do MVP) já embutida. Então o banco estará inicializado
