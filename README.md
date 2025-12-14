@@ -39,6 +39,8 @@ A imagem já estará buildada inclusive com o H2 (utilizado para a construção 
 com algumas informações. Após encerrar a imagem, se houver outra execução (ou mesmo execução paralela) o banco será resetado
 para o arquivo dentro do diretório ``/data`` na raiz do projeto.
 
+A imagem rodará na porta 8080.
+
 ### Execução local
 Você também pode executar a aplicação localmente utilizando os scripts abaixo, contanto que tenha o 
 [Quarkus CLI](https://quarkus.io/guides/cli-tooling) instalado na máquina.
