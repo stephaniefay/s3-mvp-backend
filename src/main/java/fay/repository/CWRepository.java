@@ -1,8 +1,6 @@
 package fay.repository;
 
-import fay.dto.Paginator;
-import fay.dto.cw.Collection;
-import fay.dto.cw.Wishlist;
+import fay.dto.cw.CollectWish;
 import fay.dto.user.CreateUserCWBody;
 import fay.model.card.Card;
 import fay.model.cw.UserCollection;
@@ -17,7 +15,10 @@ import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @ApplicationScoped
@@ -37,7 +38,7 @@ public class CWRepository {
     }
 
     @Transactional
-    public Collection createCW(CreateUserCWBody body, String userId) {
+    public CollectWish createCW(CreateUserCWBody body, String userId) {
         UserCollection userCollection = new UserCollection();
         userCollection.setId(UUID.randomUUID().toString());
         userCollection.setUserId(userId);
@@ -50,12 +51,11 @@ public class CWRepository {
         eM.persist(userCollection);
         eM.flush();
 
-        return body.getType().equals(Card.Relation.COLLECTION.getName()) ? new Collection(userCollection, true) :
-                new Wishlist(userCollection, true, new ArrayList<>());
+        return new CollectWish(userCollection, true);
     }
 
     @Transactional
-    public Collection updateCW(CreateUserCWBody body, UserCollection collection) {
+    public CollectWish updateCW(CreateUserCWBody body, UserCollection collection) {
         if (body.getName() != null) {
             collection.setName(body.getName());
         }
@@ -75,7 +75,7 @@ public class CWRepository {
         eM.merge(collection);
         eM.flush();
 
-        return new Collection(collection, true);
+        return new CollectWish(collection, true);
     }
 
     public List<UserCollection> fetchUserCollections(String id, boolean getPrivate) {
@@ -117,7 +117,7 @@ public class CWRepository {
         }
     }
 
-    public List<UserCollection> fetchAllCWPaginated(Paginator paginator, String type) {
+    public List<UserCollection> fetchAllCW(String type) {
         CriteriaBuilder criteriaBuilder = eM.getCriteriaBuilder();
         CriteriaQuery<UserCollection> criteriaQuery = criteriaBuilder.createQuery(UserCollection.class);
         Root<UserCollection> root = criteriaQuery.from(UserCollection.class);
@@ -128,8 +128,7 @@ public class CWRepository {
         criteriaQuery.where(predicate);
 
         try {
-            return eM.createQuery(criteriaQuery).setFirstResult(paginator.getFirstIndex())
-                    .setMaxResults(paginator.getSize()).getResultList();
+            return eM.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             log.error(e.getMessage());
         }

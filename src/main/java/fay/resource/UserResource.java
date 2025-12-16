@@ -3,7 +3,7 @@ package fay.resource;
 import fay.dto.authentication.UpdateUserBody;
 import fay.dto.authentication.UserResponse;
 import fay.dto.cw.CollectWishResponse;
-import fay.dto.cw.Collection;
+import fay.dto.cw.CollectWish;
 import fay.dto.user.CreateUserCWBody;
 import fay.model.card.Card;
 import fay.utils.UserUtils;
@@ -64,8 +64,8 @@ public class UserResource {
     @POST
     @RolesAllowed({"User"})
     @Path("/collections")
-    public RestResponse<Collection> createCollection (CreateUserCWBody body) {
-        Collection created = util.createCollectionOrWishlist(jwt.getClaim("sub"), body);
+    public RestResponse<CollectWish> createCollection (CreateUserCWBody body) {
+        CollectWish created = util.createCollectionOrWishlist(jwt.getClaim("sub"), body);
 
         if (created != null)
             return RestResponse.status(Response.Status.CREATED, created);
@@ -82,8 +82,8 @@ public class UserResource {
     @POST
     @RolesAllowed({"User"})
     @Path("/wishlists")
-    public RestResponse<Collection> createWishlist (CreateUserCWBody body) {
-        Collection created = util.createCollectionOrWishlist(jwt.getClaim("sub"), body);
+    public RestResponse<CollectWish> createWishlist (CreateUserCWBody body) {
+        CollectWish created = util.createCollectionOrWishlist(jwt.getClaim("sub"), body);
 
         if (created != null)
             return RestResponse.status(Response.Status.CREATED, created);

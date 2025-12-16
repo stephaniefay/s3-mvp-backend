@@ -3,8 +3,7 @@ package fay.utils;
 import fay.dto.authentication.UpdateUserBody;
 import fay.dto.authentication.UserResponse;
 import fay.dto.cw.CollectWishResponse;
-import fay.dto.cw.Collection;
-import fay.dto.cw.Wishlist;
+import fay.dto.cw.CollectWish;
 import fay.dto.user.CreateUserCWBody;
 import fay.model.auth.User;
 import fay.model.card.Card;
@@ -52,17 +51,13 @@ public class UserUtils {
         }
 
         for  (UserCollection collection : collectionsOrWishlists) {
-            String collectionType = collection.getType();
-            if (collectionType.equals(Card.Relation.COLLECTION.getName()))
-                response.getCw().add(new Collection(collection, getPrivate));
-            else if (collectionType.equals(Card.Relation.WISHLIST.getName()))
-                response.getCw().add(new Wishlist(collection, getPrivate, new ArrayList<>()));
+            response.getCw().add(new CollectWish(collection, getPrivate));
         }
 
         return response;
     }
 
-    public Collection createCollectionOrWishlist (String id, CreateUserCWBody body) {
+    public CollectWish createCollectionOrWishlist (String id, CreateUserCWBody body) {
         if (body.validate() && id != null)
             return CWRepository.createCW(body, id);
 

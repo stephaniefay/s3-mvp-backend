@@ -14,25 +14,30 @@ import java.util.List;
 @Setter
 @RegisterForReflection
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Collection {
+public class CollectWish {
 
     private String id;
     private String userId;
     private String name;
     private String description;
     private String cover;
-    private boolean isPrivate;
+    private String privacy;
     private boolean editable;
+    private String type;
     private List<CardCollection> cards;
 
-    public Collection(UserCollection collection, boolean isOwner) {
+    public CollectWish() {
+    }
+
+    public CollectWish(UserCollection collection, boolean isOwner) {
         this.id = collection.getId();
         this.userId = collection.getUserId();
         this.name = collection.getName();
         this.description = collection.getDescription();
         this.cover = collection.getCover();
-        this.isPrivate = collection.getIsPrivate().equals("true");
+        this.privacy = collection.getIsPrivate().equals("true") ? "private" : "public";
         this.editable = isOwner;
+        this.type = collection.getType();
         this.cards = new ArrayList<>();
     }
 }

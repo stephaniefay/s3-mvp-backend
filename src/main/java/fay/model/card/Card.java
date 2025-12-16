@@ -49,4 +49,16 @@ public class Card {
     @Column
     private String userId;
 
+    @Column
+    private Integer priority;
+
+    @Column(name = "TAG")
+    private String tagId;
+
+    @Column
+    private Integer condition;
+
+    @Column
+    private String language;
+
 }

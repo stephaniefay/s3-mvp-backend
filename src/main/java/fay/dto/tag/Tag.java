@@ -1,4 +1,4 @@
-package fay.dto.cw;
+package fay.dto.tag;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -14,4 +14,11 @@ public class Tag {
     private String id;
     private String name;
 
+    public Tag() {
+    }
+
+    public Tag(fay.model.card.Tag tag) {
+        this.id = tag.getId();
+        this.name = tag.getName();
+    }
 }
