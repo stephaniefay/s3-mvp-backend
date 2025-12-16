@@ -23,8 +23,11 @@ RUN  mkdir -p /data \
     && chown 1001:root /work /data \
     && chmod "g+rwX" /work /data
 
-
-COPY --chown=1001:root --chmod=0755 target/*-runner /work/application
+RUN curl -L \
+    https://github.com/stephaniefay/s3-mvp-backend/releases/download/1.0/s3-mvp-backend-1.0-SNAPSHOT-runner \
+    -o /work/application \
+    && chmod 0755 /work/application \
+    && chown 1001:root /work/application
 
 COPY --chown=1001:root data/*.mv.db /data/
 
