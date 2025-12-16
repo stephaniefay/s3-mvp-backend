@@ -41,6 +41,10 @@ para o arquivo dentro do diretório ``/data`` na raiz do projeto.
 
 A imagem rodará na porta 8080.
 
+> [!IMPORTANT]
+> É crucial que o docker seja gerado de dentro da pasta do projeto, pois ele **necessitará** do arquivo runner contido dentro da pasta target
+
+
 ### Execução local
 Você também pode executar a aplicação localmente utilizando os scripts abaixo, contanto que tenha o 
 [Quarkus CLI](https://quarkus.io/guides/cli-tooling) instalado na máquina.
