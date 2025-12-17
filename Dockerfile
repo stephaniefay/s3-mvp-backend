@@ -7,7 +7,7 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native -t quarkus/s3-mvp-backend .
+# docker build -f src/main/docker/Dockerfile -t quarkus/s3-mvp-backend .
 #
 # Then run the container using:
 #

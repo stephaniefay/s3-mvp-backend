@@ -27,7 +27,7 @@ Como informado acima, já que executaremos o docker utilizando a imagem nativa (
 o código abaixo.
 
 ```shell script
-docker build -f src/main/docker/Dockerfile.native -t s3-mvp-backend .
+docker build -t s3-mvp-backend .
 ```
 
 E assim que a finalização do build acontecer, rodar com:
