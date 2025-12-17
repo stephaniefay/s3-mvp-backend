@@ -23,27 +23,13 @@ Existem várias maneiras para a execução do projeto, mas para fins avaliativos
 uma imagem nativa, de tamanho reduzido, foi gerada através do ambiente linux para a execução via docker.
 
 ### Docker build
-Como informado acima, já que executaremos o docker utilizando a imagem nativa (e portanto totalmente contida) basta executar
-o código abaixo.
-
-```shell script
-docker build -t s3-mvp-backend .
-```
-
-E assim que a finalização do build acontecer, rodar com:
-```shell script
-docker run -i --rm -p 8080:8080 s3-mvp-backend
-```
-
-A imagem já estará buildada inclusive com o H2 (utilizado para a construção do MVP) já embutida. Então o banco estará inicializado
-com algumas informações. Após encerrar a imagem, se houver outra execução (ou mesmo execução paralela) o banco será resetado
-para o arquivo dentro do diretório ``/data`` na raiz do projeto.
-
-A imagem rodará na porta 8080.
 
 > [!IMPORTANT]
-> É crucial que o docker seja gerado de dentro da pasta do projeto, pois ele **necessitará** do arquivo runner contido dentro da pasta target
+> Essa imagem será buildada pelo docker-compose.yml que está localizado no projeto [s3-mvp-frontend](https://github.com/stephaniefay/s3-mvp-frontend) conforme requisição da entrega.
 
+A escolha pelo docker compose foi para garantir a comunicação entre front e back (graças ao uso do Angular como uma SPA).
+
+O backend estará rodando no path [http://localhost:8080](http://localhost:8080), e sua documentação poderá ser acessada na [Swagger UI](http://localhost:8080/swagger)
 
 ### Execução local
 Você também pode executar a aplicação localmente utilizando os scripts abaixo, contanto que tenha o 
